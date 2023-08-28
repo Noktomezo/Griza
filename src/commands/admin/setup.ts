@@ -38,7 +38,7 @@ export const createCommand = (client: Griza) => {
 				name: 'station',
 				type: ApplicationCommandOptionType.String,
 				choices: fetchStations().map(s => ({ name: `${s.emoji} ${s.name}`, value: s.url })),
-				required: true,
+				required: false,
 				description: 'SETUP_COMMAND_OPTION_STATION_DESCRIPTION'
 			},
 			{
@@ -52,8 +52,10 @@ export const createCommand = (client: Griza) => {
 		async run({ client, translate, interaction, settings }) {
 			const voiceChannel = interaction.options.getChannel<ChannelType.GuildVoice>('voice-channel', true)
 			const textChannel = interaction.options.getChannel<ChannelType.GuildText>('text-channel', false)
-			const stationURL = interaction.options.getString('station', true)
-			const station = client.radio.resolveStation<true>(stationURL)
+			const stationURL = interaction.options.getString('station', false)
+			const isStationRandom = stationURL !== null
+			const randomStation = client.radio.stations[Math.floor(Math.random() * client.radio.stations.length)]
+			const station = isStationRandom ? client.radio.resolveStation<true>(stationURL) : randomStation
 
 			await interaction.deferReply()
 
@@ -73,7 +75,7 @@ export const createCommand = (client: Griza) => {
 			try {
 				await client.radio.set(interaction, {
 					voiceChannelId: voiceChannel.id,
-					stationURL,
+					stationURL: isStationRandom ? randomStation.url : station.url,
 					textChannelId: textChannel?.id ?? interaction.channel!.id
 				})
 
@@ -83,7 +85,7 @@ export const createCommand = (client: Griza) => {
 							color: 0x39ff84,
 							description: translate('SETUP_COMMAND_SUCCESS', {
 								'{VOICE_CHANNEL}': `<#${voiceChannel.id}>`,
-								'{STATION}': station.name
+								'{STATION}': isStationRandom ? randomStation.name : station.name
 							})
 						}
 					]

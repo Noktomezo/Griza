@@ -44,17 +44,19 @@ export class Radio extends Player {
 	public async set(guildIdResolvable: TGuildIdResolvable, settings: TStationSettings) {
 		const guildId = resolveGuildId(guildIdResolvable)
 		const guild = this.client.guilds.cache.get(guildId)
-		if (!guild) return
+		if (!guild) throw new Error('Invalid guild')
 
 		const guildSettings = this.client.database.get(guild.id)!
 		const voiceChannel = guild.channels.cache.find((c): c is VoiceChannel => c.id === settings.voiceChannelId)
 		const station = this.resolveStation<true>(settings.stationURL)
-		if (!voiceChannel || station) return
+		if (!voiceChannel || !station) throw new Error('Invalid station or voice channel')
 
 		this.client.database.set(guild.id, { ...guildSettings, ...settings })
 
 		const resolvedURL = await resolveURL(settings.stationURL)
-		if (resolvedURL) void this.safePlay(voiceChannel, settings.stationURL, true)
+		if (!resolvedURL) throw new Error('Invalid station url')
+
+		await this.safePlay(voiceChannel, settings.stationURL, true)
 	}
 
 	public reset(guildIdResolvable: TGuildIdResolvable) {
