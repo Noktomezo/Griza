@@ -3,11 +3,11 @@
 </div>
 
 <p align="center" >
-    <a href="https://discord.com/oauth2/authorize?client_id=774329375206277122&permissions=277028817920&scope=bot+applications.commands">
-        <img src="https://img.shields.io/badge/%D0%9F%D1%80%D0%B8%D0%B3%D0%BB%D0%B0%D1%81%D0%B8%D1%82%D1%8C-Discord-7289da?style=flat&logo=discord&logoColor=white"/>
+    <a href="https://discord.com/api/oauth2/authorize?client_id=774329375206277122&permissions=2150909952&scope=bot%20applications.commands">
+        <img src="https://img.shields.io/badge/Invite-Discord-7289da?style=flat&logo=discord&logoColor=white"/>
     </a>
-    <a href="https://discord.gg/QxzAn9JuEJ">
-        <img src="https://img.shields.io/badge/%D0%A2%D0%B5%D1%85.%20%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D0%B0-Discord-7289da?style=flat&logo=discord&logoColor=white" />
+    <a href="https://discord.gg/XmqkJRmcty">
+        <img src="https://img.shields.io/badge/Support-Discord-7289da?style=flat&logo=discord&logoColor=white" />
     </a>
 </p>
 
