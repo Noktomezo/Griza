@@ -56,7 +56,7 @@ export class Radio extends Player {
 		const resolvedURL = await resolveURL(settings.stationURL)
 		if (!resolvedURL) throw new Error('Invalid station url')
 
-		await this.safePlay(voiceChannel, settings.stationURL, true)
+		await this.safePlay(voiceChannel, resolvedURL, true)
 	}
 
 	public reset(guildIdResolvable: TGuildIdResolvable) {

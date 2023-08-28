@@ -45,14 +45,16 @@
 
 	"CHANGE_COMMAND_DESCRIPTION": "Изменить текущую радиостанцию",
 	"CHANGE_COMMAND_OPTION_STATION_DESCRIPTION": "Радиостанция на которую переключится бот",
+	"CHANGE_COMMAND_WARNING_NOT_SET": "Радио еще не настроено, чтобы использовать эту команду",
 	"CHANGE_COMMAND_WARNING_SAME_STATION": "Вы не можете изменить радиостанцию на ту же самую",
 	"CHANGE_COMMAND_SUCCESS": "Радио успешно переключено на станцию **`{STATION}`**",
 	"CHANGE_COMMAND_ERROR": "При переключении радио произошла непредвиденная ошибка, попробуйте позже",
 
 	"NOW_PLAYING_COMMAND_DESCRIPTION": "Получить информацию о станции и текущем треке",
-	"NOW_PLAYING_NOTHING_PLAYING": "В данный момент ничего не играет",
-	"NOW_PLAYING_ERROR": "Не удалось получить информацию о текущем треке, повторите попытку позже",
-	"NOW_PLAYING_CURRENT_TRACK": "Текущая станция: **`{STATION_NAME}`**\nСейчас играет: **`{TRACK}`**",
+	"NOW_PLAYING_COMMAND_NOTHING_PLAYING": "В данный момент ничего не играет",
+	"NOW_PLAYING_COMMAND_WARNING_NOT_SET": "Радио еще не настроено, чтобы использовать эту команду",
+	"NOW_PLAYING_COMMAND_ERROR": "Не удалось получить информацию о текущем треке, повторите попытку позже",
+	"NOW_PLAYING_COMMAND_CURRENT_TRACK": "Текущая станция: **`{STATION_NAME}`**\nСейчас играет: **`{TRACK}`**",
 
 	"HELP_COMMAND_DESCRIPTION": "Получить список доступных команд или инструкции к их использованию",
 	"HELP_COMMAND_OPTION_COMMAND_DESCRIPTION": "Команда о которой нужно получить подробную информацию",

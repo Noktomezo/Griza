@@ -44,14 +44,16 @@
 
 	"CHANGE_COMMAND_DESCRIPTION": "Change the current radio station",
 	"CHANGE_COMMAND_OPTION_STATION_DESCRIPTION": "The radio station the bot will switch to",
+	"CHANGE_COMMAND_WARNING_NOT_SET": "The radio is not yet set up to use this command",
 	"CHANGE_COMMAND_WARNING_SAME_STATION": "You cannot change the radio station to the same station",
 	"CHANGE_COMMAND_SUCCESS": "The radio has been successfully switched to station **`{STATION}`**",
 	"CHANGE_COMMAND_ERROR": "An unexpected error occurred while switching the radio, try again later",
 
 	"NOW_PLAYING_COMMAND_DESCRIPTION": "Get information about the station and the current track",
-	"NOW_PLAYING_NOTHING_PLAYING": "Nothing is playing at the moment",
-	"NOW_PLAYING_ERROR": "Could not get information about the current track, try again later",
-	"NOW_PLAYING_CURRENT_TRACK": "Current station: **`{STATION_NAME}`**\nNow playing: **`{TRACK}`**",
+	"NOW_PLAYING_COMMAND_NOTHING_PLAYING": "Nothing is playing at the moment",
+	"NOW_PLAYING_COMMAND_WARNING_NOT_SET": "The radio is not yet set up to use this command",
+	"NOW_PLAYING_COMMAND_ERROR": "Could not get information about the current track, try again later",
+	"NOW_PLAYING_COMMAND_CURRENT_TRACK": "Current station: **`{STATION_NAME}`**\nNow playing: **`{TRACK}`**",
 
 	"HELP_COMMAND_DESCRIPTION": "Get a list of available commands or instructions on how to use them",
 	"HELP_COMMAND_OPTION_COMMAND_DESCRIPTION": "The command about which you want to get detailed information",

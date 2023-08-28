@@ -53,9 +53,9 @@ export const createCommand = (client: Griza) => {
 			const voiceChannel = interaction.options.getChannel<ChannelType.GuildVoice>('voice-channel', true)
 			const textChannel = interaction.options.getChannel<ChannelType.GuildText>('text-channel', false)
 			const stationURL = interaction.options.getString('station', false)
-			const isStationRandom = stationURL !== null
+			const isStationRandom = stationURL === null
 			const randomStation = client.radio.stations[Math.floor(Math.random() * client.radio.stations.length)]
-			const station = isStationRandom ? client.radio.resolveStation<true>(stationURL) : randomStation
+			const station = isStationRandom ? randomStation : client.radio.resolveStation<true>(stationURL)
 
 			await interaction.deferReply()
 

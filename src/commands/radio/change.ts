@@ -42,6 +42,19 @@ export const createCommand = (client: Griza) => {
 
 			await interaction.deferReply()
 
+			if (settings.stationURL === null) {
+				await interaction.followUp({
+					embeds: [
+						{
+							color: 0xfade2b,
+							description: translate('CHANGE_COMMAND_WARNING_NOT_SET')
+						}
+					]
+				})
+
+				return
+			}
+
 			if (settings.stationURL === stationURL) {
 				await interaction.followUp({
 					embeds: [

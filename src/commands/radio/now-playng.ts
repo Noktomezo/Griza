@@ -11,12 +11,25 @@ export const createCommand = (client: Griza) => {
 
 			const queue = client.radio.queues.get(interaction.guild!.id)
 
+			if (settings.stationURL === null) {
+				await interaction.followUp({
+					embeds: [
+						{
+							color: 0xfade2b,
+							description: translate('CHANGE_COMMAND_WARNING_NOT_SET')
+						}
+					]
+				})
+
+				return
+			}
+
 			if (!queue?.currentTrack) {
 				await interaction.followUp({
 					embeds: [
 						{
 							color: 0xfade2b,
-							description: translate('NOW_PLAYING_NOTHING_PLAYING')
+							description: translate('NOW_PLAYING_COMMAND_NOTHING_PLAYING')
 						}
 					]
 				})
@@ -30,7 +43,7 @@ export const createCommand = (client: Griza) => {
 					embeds: [
 						{
 							color: 0xfade2b,
-							description: translate('NOW_PLAYING_ERROR')
+							description: translate('NOW_PLAYING_COMMAND_ERROR')
 						}
 					]
 				})
@@ -41,7 +54,7 @@ export const createCommand = (client: Griza) => {
 				embeds: [
 					{
 						color: 0x39ff84,
-						description: translate('NOW_PLAYING_CURRENT_TRACK', {
+						description: translate('NOW_PLAYING_COMMAND_CURRENT_TRACK', {
 							'{STATION_NAME}': currentStation.name,
 							'{TRACK}': currentTrackTitle
 						}),
