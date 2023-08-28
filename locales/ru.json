@@ -1,0 +1,65 @@
+{
+	"LANGUAGE_FLAG": "\uD83C\uDDF7\uD83C\uDDFA",
+	"LANGUAGE_LABEL": "Русский",
+
+	"LOGGED_IN": "Успешный вход от имени {CLIENT_USER}",
+
+	"DATABASE_UPDATE_STARTED": "Началось обновление базы данных",
+	"DATABASE_UPDATE_FINISHED": "Обновление базы данных завершено",
+
+	"LOCALES_UPDATE_STARTED": "Началось обновление локализаций",
+	"LOCALES_UPDATE_FINISHED": "Обновление локализаций завершено",
+
+	"STATION_BIG_HITS_DESCRIPTION": "Танцевальные хиты: Dua Lipa, Ave Max, Sia и т.д.",
+	"STATION_AQUA_MANGA_DESCRIPTION": "Самые интересные звуки и лучшие новости из мира аниме",
+	"STATION_METAL_MADNESS_DESCRIPTION": "Развлечения в стиле хэви-метал",
+	"STATION_CHILL_OUT_DESCRIPTION": "Расслабляющий вайб",
+	"STATION_FUKO_DESCRIPTION": "Новая школа рэпа без цензуры",
+	"STATION_HIP_HOP_DESCRIPTION": "Рэп новой волны со всего мира",
+	"STATION_LATINA_DANCE_DESCRIPTION": "Despacito, Gazolina, Danza Kuduro и подобное",
+	"STATION_LOFI_DESCRIPTION": "Ламповый бит и треск винила",
+	"STATION_MIDTEMPO_DESCRIPTION": "Электро и мидтемп в стиле киберпанк",
+	"STATION_HYPE_DESCRIPTION": "Топ с музыкальных стримингов",
+	"STATION_PHONK_DESCRIPTION": "Мрачный бит в стиле $uicideBoy$ и Ghostmane",
+	"STATION_REGGAE_DESCRIPTION": "Танцевальный вайб с берегов Ямайки",
+	"STATION_SYNTHWAVE_DESCRIPTION": "Эстетика 80-х и 90-х",
+	"STATION_TRAP_DESCRIPTION": "Главные Trap-хиты: Apashe, DJ Snake и т.д.",
+	"STATION_WORKOUT_DESCRIPTION": "Бит для спортивного тонуса",
+
+	"SETUP_COMMAND_DESCRIPTION": "Провести установку бота на сервере",
+	"SETUP_COMMAND_OPTION_VOICE_CHANNEL_DESCRIPTION": "Голосовой канал где будет проигрываться радио",
+	"SETUP_COMMAND_OPTION_TEXT_CHANNEL_DESCRIPTION": "Текстовый канал, где будут использоваться команды бота",
+	"SETUP_COMMAND_OPTION_STATION_DESCRIPTION": "Радиостанция, которая будет проигрываться, сразу после установки",
+	"SETUP_COMMAND_WARNING_ALREADY_SET": "Радио уже настроено, если вы хотите изменить каналы, используйте **`/reset`** и проведите настройку заново",
+	"SETUP_COMMAND_ERROR": "Во время установки произошла непредвиденная ошибка, попробуйте снова позже",
+	"SETUP_COMMAND_SETUP_SUCCESS": "Настройка успешно завершена, в канале {VOICE_CHANNEL} теперь проигрывается радиостанция **{STATION}**",
+
+	"RESET_COMMAND_DESCRIPTION": "Сбросить настройки радио и выгнать бота из канала",
+	"RESET_COMMAND_SUCCESS": "Настройки радио были успешно сброшены",
+	"RESET_COMMAND_WARNING_NOT_SET_YET": "Радио еще не настроено, чтобы его сбрасывать",
+
+	"LANGUAGE_COMMAND_DESCRIPTION": "Сменить язык бота на сервере",
+	"LANGUAGE_COMMAND_CHOOSE": "Выберите язык, который хотите использовать",
+	"LANGUAGE_COMMAND_CHOOSE_TIMEOUT": "Вы не выбрали язык в течении 30 секунд, язык не будет сменен",
+	"LANGUAGE_COMMAND_CHANGE_SUCCESS": "Языка успешно изменен на **`{LANGUAGE}`**",
+
+	"CHANGE_COMMAND_DESCRIPTION": "Изменить текущую радиостанцию",
+	"CHANGE_COMMAND_OPTION_STATION_DESCRIPTION": "Радиостанция на которую переключится бот",
+	"CHANGE_COMMAND_WARNING_SAME_STATION": "Вы не можете изменить радиостанцию на ту же самую",
+	"CHANGE_COMMAND_SUCCESS": "Радио успешно переключено на станцию **`{STATION}`**",
+	"CHANGE_COMMAND_ERROR": "При переключении радио произошла непредвиденная ошибка, попробуйте позже",
+
+	"NOW_PLAYING_COMMAND_DESCRIPTION": "Получить информацию о станции и текущем треке",
+	"NOW_PLAYING_NOTHING_PLAYING": "В данный момент ничего не играет",
+	"NOW_PLAYING_ERROR": "Не удалось получить информацию о текущем треке, повторите попытку позже",
+	"NOW_PLAYING_CURRENT_TRACK": "Текущая станция: **`{STATION_NAME}`**\nСейчас играет: **`{TRACK}`**",
+
+	"HELP_COMMAND_DESCRIPTION": "Получить список доступных команд или инструкции к их использованию",
+	"HELP_COMMAND_OPTION_COMMAND_DESCRIPTION": "Команда о которой нужно получить подробную информацию",
+	"HELP_COMMAND_ONLY_ADMIN": "Чтобы использовать команды из категории **`{ADMIN_CATEGORY}`**, вам нужны привилегии администратора",
+	"HELP_COMMAND_MORE_INFO": "Для получения более подробной информации о конкретной команде используйте: **/help `<command>`**",
+
+	"COMMAND_GROUP_ADMIN": "Администрирование",
+	"COMMAND_GROUP_INFO": "Информация",
+	"COMMAND_GROUP_RADIO": "Радио"
+}

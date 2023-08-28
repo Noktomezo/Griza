@@ -1,0 +1,64 @@
+{
+	"LANGUAGE_FLAG": "\uD83C\uDDFA\uD83C\uDDF8",
+	"LANGUAGE_LABEL": "English",
+	"LOGGED_IN": "Successfully logged in as {CLIENT_USER}",
+
+	"DATABASE_UPDATE_STARTED": "Database update started",
+	"DATABASE_UPDATE_FINISHED": "Database update finished",
+
+	"LOCALES_UPDATE_STARTED": "Locales update started",
+	"LOCALES_UPDATE_FINISHED": "Locales update finished",
+
+	"STATION_BIG_HITS_DESCRIPTION": "Dance hits like Dua Lipa, Ave Max, Sia, etc.",
+	"STATION_AQUA_MANGA_DESCRIPTION": "The most exciting sounds and the best news from the anime world",
+	"STATION_METAL_MADNESS_DESCRIPTION": "Heavy Metal entertainment",
+	"STATION_CHILL_OUT_DESCRIPTION": "A relaxing vibe",
+	"STATION_FUKO_DESCRIPTION": "A new school of rap without censorship",
+	"STATION_HIP_HOP_DESCRIPTION": "New wave rap from around the world",
+	"STATION_LATINA_DANCE_DESCRIPTION": "Despacito, Gazolina, Danza Kuduro and the like.",
+	"STATION_LOFI_DESCRIPTION": "The lamplight beat and the crackle of vinyl",
+	"STATION_MIDTEMPO_DESCRIPTION": "Cyberpunk style electro and midtempo.",
+	"STATION_HYPE_DESCRIPTION": "Top from music streaming services",
+	"STATION_PHONK_DESCRIPTION": "Gloomy beat in the style of $uicideBoy$ and Ghostmane",
+	"STATION_REGGAE_DESCRIPTION": "A dancing vibe from the shores of Jamaica.",
+	"STATION_SYNTHWAVE_DESCRIPTION": "The aesthetics of the 80s and 90s",
+	"STATION_TRAP_DESCRIPTION": "Major Trap hits: Apashe, DJ Snake, etc.",
+	"STATION_WORKOUT_DESCRIPTION": "Sports toning beats",
+
+	"SETUP_COMMAND_DESCRIPTION": "Carry out installation of the bot on the server",
+	"SETUP_COMMAND_OPTION_VOICE_CHANNEL_DESCRIPTION": "Voice channel where the radio will be played",
+	"SETUP_COMMAND_OPTION_TEXT_CHANNEL_DESCRIPTION": "Text channel where bot commands will be used",
+	"SETUP_COMMAND_OPTION_STATION_DESCRIPTION": "Radio station to be played, immediately after installation",
+	"SETUP_COMMAND_WARNING_ALREADY_SET": "The radio is already set up, if you want to change channels, use **`/reset`** and do the setup again",
+	"SETUP_COMMAND_ERROR": "An unexpected error occurred during installation, try again later",
+	"SETUP_COMMAND_SUCCESS": "The setup has been successfully completed and the radio station **{STATION}** is now playing in the {VOICE_CHANNEL} channel",
+
+	"RESET_COMMAND_DESCRIPTION": "Reset radio settings and kick the bot out of the channel",
+	"RESET_COMMAND_SUCCESS": "The radio settings have been successfully reset",
+	"RESET_COMMAND_WARNING_NOT_SET_YET": "The radio isn't set up to be reset yet",
+
+	"LANGUAGE_COMMAND_DESCRIPTION": "Change the language of the bot on the server",
+	"LANGUAGE_COMMAND_CHOOSE": "Select the language that you want to use",
+	"LANGUAGE_COMMAND_CHOOSE_TIMEOUT": "You have not selected a language within 30 seconds, the language will not be changed",
+	"LANGUAGE_COMMAND_CHANGE_SUCCESS": "The language has been successfully changed to **`{LANGUAGE}`**",
+
+	"CHANGE_COMMAND_DESCRIPTION": "Change the current radio station",
+	"CHANGE_COMMAND_OPTION_STATION_DESCRIPTION": "The radio station the bot will switch to",
+	"CHANGE_COMMAND_WARNING_SAME_STATION": "You cannot change the radio station to the same station",
+	"CHANGE_COMMAND_SUCCESS": "The radio has been successfully switched to station **`{STATION}`**",
+	"CHANGE_COMMAND_ERROR": "An unexpected error occurred while switching the radio, try again later",
+
+	"NOW_PLAYING_COMMAND_DESCRIPTION": "Get information about the station and the current track",
+	"NOW_PLAYING_NOTHING_PLAYING": "Nothing is playing at the moment",
+	"NOW_PLAYING_ERROR": "Could not get information about the current track, try again later",
+	"NOW_PLAYING_CURRENT_TRACK": "Current station: **`{STATION_NAME}`**\nNow playing: **`{TRACK}`**",
+
+	"HELP_COMMAND_DESCRIPTION": "Get a list of available commands or instructions on how to use them",
+	"HELP_COMMAND_OPTION_COMMAND_DESCRIPTION": "The command about which you want to get detailed information",
+	"HELP_COMMAND_ONLY_ADMIN": "To use commands from the **`{ADMIN_CATEGORY}`** category, you need administrator privileges",
+	"HELP_COMMAND_MORE_INFO": "For more information about a specific command, use: **/help `<command>`**",
+
+	"COMMAND_GROUP_ADMIN": "Admin",
+	"COMMAND_GROUP_INFO": "Information",
+	"COMMAND_GROUP_RADIO": "Radio"
+}
