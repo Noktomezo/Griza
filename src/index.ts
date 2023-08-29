@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { GatewayIntentBits, Partials } from 'discord.js'
 import { Griza } from './core/Griza.js'
 import { env } from './env.js'
@@ -11,3 +12,6 @@ const bot = new Griza({
 })
 
 await bot.init(env.DISCORD_TOKEN)
+
+process.on('uncaughtException', error => bot.logger.error(error))
+process.on('unhandledRejection', error => bot.logger.error(error))
