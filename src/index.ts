@@ -13,5 +13,11 @@ const bot = new Griza({
 
 await bot.init(env.DISCORD_TOKEN)
 
-process.on('uncaughtException', error => bot.logger.error(error))
-process.on('unhandledRejection', error => bot.logger.error(error))
+const repair = async (error: unknown) => {
+	bot.logger.error(error)
+	await bot.destroy()
+	await bot.init(env.DISCORD_TOKEN)
+}
+
+process.on('uncaughtException', async error => repair(error))
+process.on('unhandledRejection', async error => repair(error))
