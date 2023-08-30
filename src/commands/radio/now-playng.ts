@@ -7,63 +7,38 @@ export const createCommand = (client: Griza) => {
 		description: 'NOW_PLAYING_COMMAND_DESCRIPTION',
 		category: 'radio',
 		async run({ client, translate, interaction, settings }) {
+			const queue = client.radio.queues.get(interaction.guild!.id)
+			const station = client.radio.resolveStation(settings.stationURL!)
+
 			await interaction.deferReply()
 
-			const queue = client.radio.queues.get(interaction.guild!.id)
+			if (!station) {
+				const warningMessage = translate('NOW_PLAYING_COMMAND_WARNING_INVALID_STATION')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+			}
 
 			if (settings.stationURL === null) {
-				await interaction.followUp({
-					embeds: [
-						{
-							color: 0xfade2b,
-							description: translate('CHANGE_COMMAND_WARNING_NOT_SET')
-						}
-					]
-				})
-
-				return
+				const description = translate('NOW_PLAYING_COMMAND_WARNING_NOT_SET')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description }] })
 			}
 
 			if (!queue?.currentTrack) {
-				await interaction.followUp({
-					embeds: [
-						{
-							color: 0xfade2b,
-							description: translate('NOW_PLAYING_COMMAND_NOTHING_PLAYING')
-						}
-					]
-				})
-				return
+				const warningMessage = translate('NOW_PLAYING_COMMAND_WARNING_NOT_PLAYING')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
-			const currentStation = client.radio.resolveStation<true>(settings.stationURL!)
-			const currentTrackTitle = await client.radio.getCurrentTrackTitle(interaction)
-			if (!currentTrackTitle) {
-				await interaction.followUp({
-					embeds: [
-						{
-							color: 0xfade2b,
-							description: translate('NOW_PLAYING_COMMAND_ERROR')
-						}
-					]
-				})
-				return
+			const trackTitle = await client.radio.getCurrentTrackTitle(interaction)
+			if (!trackTitle) {
+				const errorMessage = translate('NOW_PLAYING_COMMAND_ERROR')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: errorMessage }] })
 			}
 
-			await interaction.followUp({
-				embeds: [
-					{
-						color: 0x39ff84,
-						description: translate('NOW_PLAYING_COMMAND_CURRENT_TRACK', {
-							'{STATION_NAME}': currentStation.name,
-							'{TRACK}': currentTrackTitle
-						}),
-						thumbnail: {
-							url: currentStation.logo
-						}
-					}
-				]
+			const description = translate('NOW_PLAYING_COMMAND_CURRENT_TRACK', {
+				'{STATION_NAME}': station.name,
+				'{TRACK}': trackTitle
 			})
+
+			return interaction.followUp({ embeds: [{ color: 0x39ff84, description, thumbnail: { url: station.logo } }] })
 		}
 	} as ICommand
 }

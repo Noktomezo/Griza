@@ -69,9 +69,10 @@ export class CommandManager {
 			if (!guild) return
 
 			const guildSettings = this.client.database.get(guild.id)
-			const translatedGuildCommands = this._localized.get(guildSettings!.locale)
+			const translatedGuildCommands = this._localized.get(guildSettings.locale)
 			if (!translatedGuildCommands?.size) return
 			await guild.commands.set([...translatedGuildCommands.values()])
+			return
 		}
 
 		const allGuildSettings = this.client.database.getAll()

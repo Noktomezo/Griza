@@ -23,9 +23,9 @@ export interface IGrizaOptions extends ClientOptions {
 }
 
 export interface IGuildSettings {
-	locale: LocaleString
+	commandChannelId: Snowflake | null
+	locale: TLocaleCode
 	stationURL: string | null
-	textChannelId: Snowflake | null
 	voiceChannelId: Snowflake | null
 }
 
@@ -63,7 +63,9 @@ export interface ILocaleManagerEvents {
 }
 
 export type TStationSettings = {
-	[K in keyof Omit<IGuildSettings, 'locale'>]: NonNullable<IGuildSettings[K]>
+	[K in Exclude<keyof IGuildSettings, 'commandChannelId' | 'locale'>]: NonNullable<IGuildSettings[K]>
+} & {
+	commandChannelId: IGuildSettings['commandChannelId']
 }
 
 export type TChoiceStation<Choice extends boolean> = If<Choice, IStationData, IStationData | undefined>

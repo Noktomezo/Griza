@@ -27,45 +27,29 @@ export const createCommand = (client: Griza) => {
 			})
 
 			const row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)
-
+			const chooseMessage = translate('LANGUAGE_COMMAND_CHOOSE')
 			const response = await interaction.followUp({
-				embeds: [
-					{
-						color: 0xfade2b,
-						description: translate('LANGUAGE_COMMAND_CHOOSE')
-					}
-				],
+				embeds: [{ color: 0xfade2b, description: chooseMessage }],
 				components: [row]
 			})
 
 			try {
 				const filter = (i: Interaction) => i.isButton() && i.user.id === interaction.user.id
 				const confirmation = await response.awaitMessageComponent({ filter, time: 30_000 })
-				const locale = client.locales.resolve(confirmation.customId)
-				const localeName = locale.get('LANGUAGE_LABEL')!
-				const translated = locale.get('LANGUAGE_COMMAND_CHANGE_SUCCESS')!
-				client.database.set(interaction.guild!.id, { ...settings, locale: confirmation.customId as TLocaleCode })
-				await interaction.editReply({
-					embeds: [
-						{
-							color: 0x39ff84,
-							description: translated.replace('{LANGUAGE}', localeName)
-						}
-					],
-					components: []
-				})
 
-				await client.commands.updateGuildCommands(interaction)
+				const newLocale = client.locales.resolve(confirmation.customId)
+				const newLocaleName = newLocale.get('LANGUAGE_LABEL') ?? 'LANGUAGE_LABEL'
+				const message = newLocale.get('LANGUAGE_COMMAND_CHANGE_SUCCESS') ?? 'LANGUAGE_COMMAND_CHANGE_SUCCESS'
+
+				const newGuildSettings = { ...settings, locale: confirmation.customId as TLocaleCode }
+				await client.database.set(interaction.guild!.id, newGuildSettings)
+				void client.commands.updateGuildCommands(interaction)
+
+				const successMessage = message.replace('{LANGUAGE}', newLocaleName)
+				await interaction.editReply({ embeds: [{ color: 0x39ff84, description: successMessage }], components: [] })
 			} catch {
-				await interaction.editReply({
-					embeds: [
-						{
-							color: 0xff1f4f,
-							description: translate('LANGUAGE_COMMAND_CHOOSE_TIMEOUT')
-						}
-					],
-					components: []
-				})
+				const errorMessage = translate('LANGUAGE_COMMAND_CHOOSE_TIMEOUT')
+				await interaction.editReply({ embeds: [{ color: 0xff1f4f, description: errorMessage }], components: [] })
 			}
 		}
 	} as ICommand

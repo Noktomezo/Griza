@@ -1,3 +1,5 @@
+/setup
+{CHANNELS}
 /help
 {GUILDS}
 /change

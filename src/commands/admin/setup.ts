@@ -42,7 +42,7 @@ export const createCommand = (client: Griza) => {
 				description: 'SETUP_COMMAND_OPTION_STATION_DESCRIPTION'
 			},
 			{
-				name: 'text-channel',
+				name: 'command-channel',
 				type: ApplicationCommandOptionType.Channel,
 				channelTypes: [ChannelType.GuildText],
 				required: false,
@@ -51,55 +51,42 @@ export const createCommand = (client: Griza) => {
 		],
 		async run({ client, translate, interaction, settings }) {
 			const voiceChannel = interaction.options.getChannel<ChannelType.GuildVoice>('voice-channel', true)
-			const textChannel = interaction.options.getChannel<ChannelType.GuildText>('text-channel', false)
+			const commandChannel = interaction.options.getChannel<ChannelType.GuildText>('command-channel', false)
 			const stationURL = interaction.options.getString('station', false)
 			const isStationRandom = stationURL === null
 			const randomStation = client.radio.stations[Math.floor(Math.random() * client.radio.stations.length)]
-			const station = isStationRandom ? randomStation : client.radio.resolveStation<true>(stationURL)
+			const station = isStationRandom ? randomStation : client.radio.resolveStation(stationURL)
 
 			await interaction.deferReply()
 
-			if (settings.voiceChannelId && settings.stationURL) {
-				await interaction.followUp({
-					embeds: [
-						{
-							color: 0xfade2b,
-							description: translate('SETUP_COMMAND_WARNING_ALREADY_SET')
-						}
-					]
-				})
+			if (!station) {
+				const warningMessage = translate('SETUP_COMMAND_WARNING_INVALID_STATION')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+			}
 
-				return
+			if (settings.voiceChannelId && settings.stationURL) {
+				const warningMessage = translate('SETUP_COMMAND_WARNING_ALREADY_SET')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			try {
-				await client.radio.set(interaction, {
-					voiceChannelId: voiceChannel.id,
-					stationURL: isStationRandom ? randomStation.url : station.url,
-					textChannelId: textChannel?.id ?? interaction.channel!.id
+				const voiceChannelId = voiceChannel.id
+				const commandChannelId = commandChannel?.id ?? null
+				const stationURL = isStationRandom ? randomStation.url : station.url
+
+				await client.radio.set(interaction, { voiceChannelId, commandChannelId, stationURL })
+
+				const successMessage = translate('SETUP_COMMAND_SUCCESS', {
+					'{VOICE_CHANNEL}': isStationRandom ? randomStation.name : station.name,
+					'{STATION}': `<#${voiceChannel.id}>`
 				})
 
-				await interaction.followUp({
-					embeds: [
-						{
-							color: 0x39ff84,
-							description: translate('SETUP_COMMAND_SUCCESS', {
-								'{VOICE_CHANNEL}': `<#${voiceChannel.id}>`,
-								'{STATION}': isStationRandom ? randomStation.name : station.name
-							})
-						}
-					]
-				})
+				await interaction.followUp({ embeds: [{ color: 0x39ff84, description: successMessage }] })
 			} catch (error: unknown) {
 				client.logger.error(error)
-				await interaction.followUp({
-					embeds: [
-						{
-							color: 0xff1f4f,
-							description: translate('SETUP_COMMAND_ERROR')
-						}
-					]
-				})
+
+				const errorMessage = translate('SETUP_COMMAND_ERROR')
+				await interaction.followUp({ embeds: [{ color: 0xff1f4f, description: errorMessage }] })
 			}
 		}
 	} as ICommand

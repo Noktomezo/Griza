@@ -10,27 +10,21 @@ export const createCommand = (client: Griza) => {
 			await interaction.deferReply()
 
 			if (!settings.stationURL || !settings.voiceChannelId) {
-				await interaction.followUp({
-					embeds: [
-						{
-							color: 0xfade2b,
-							description: translate('RESET_COMMAND_WARNING_NOT_SET_YET')
-						}
-					]
-				})
-
-				return
+				const warningMessage = translate('RESET_COMMAND_WARNING_NOT_SET_YET')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
-			client.radio.reset(interaction)
-			await interaction.followUp({
-				embeds: [
-					{
-						color: 0x39ff84,
-						description: translate('RESET_COMMAND_SUCCESS')
-					}
-				]
-			})
+			try {
+				await client.radio.reset(interaction)
+
+				const successMessage = translate('RESET_COMMAND_SUCCESS')
+				return await interaction.followUp({ embeds: [{ color: 0x39ff84, description: successMessage }] })
+			} catch (error) {
+				client.logger.error(error)
+
+				const errorMessage = translate('RESET_COMMAND_ERROR')
+				return await interaction.followUp({ embeds: [{ color: 0xff1f4f, description: errorMessage }] })
+			}
 		}
 	} as ICommand
 }

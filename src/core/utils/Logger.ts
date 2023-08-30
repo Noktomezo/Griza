@@ -32,12 +32,17 @@ export class Logger {
 		}
 	}
 
-	private _parseStrings(message: any, prefix: string, type: 'error' | 'info' | 'warn' = 'info'): string {
+	private _parseStrings(obj: any, prefix: string, type: 'error' | 'info' | 'warn' = 'info'): string {
 		const color = type === 'error' ? colors.red : type === 'warn' ? colors.yellow : colors.green
 
 		const time = getCurrentTime()
-		if (typeof message === 'string') return `[${time}] [${prefix}]: ${color(message)}`
-		const splitStrings = JSON.stringify(message.stack ?? message, null, 4).split('\n')
+		if (typeof obj === 'string') return `[${time}] [${prefix}]: ${color(obj)}`
+		if (obj instanceof Error && obj.stack)
+			return obj.stack
+				.split('\n')
+				.map(s => `[${time}] [${prefix}]: ${color(s)}`)
+				.join('\n')
+		const splitStrings = JSON.stringify(obj.stack ?? obj, null, 4).split('\n')
 		return splitStrings.map(str => `[${time}] [${prefix}]: ${color(str)}`).join('\n')
 	}
 }

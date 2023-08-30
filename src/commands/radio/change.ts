@@ -1,26 +1,6 @@
-import { readdirSync } from 'node:fs'
-import { join } from 'node:path'
-import { cwd } from 'node:process'
-import type { VoiceChannel } from 'discord.js'
 import { ApplicationCommandOptionType } from 'discord.js'
 import type { Griza } from '../../core/Griza.js'
-import { importJSON, isValidJSON } from '../../core/utils/Utils.js'
-import type { ICommand, IStationData } from '../../types/default.js'
-
-const fetchStations = () => {
-	const stationFolderPath = join(cwd(), 'stations')
-	const stationNames = []
-
-	for (const stationFile of readdirSync(stationFolderPath)) {
-		const stationFilePath = join(stationFolderPath, stationFile)
-		if (!isValidJSON(stationFilePath)) continue
-
-		const station = importJSON<IStationData>(stationFilePath)
-		stationNames.push(station)
-	}
-
-	return stationNames
-}
+import type { ICommand } from '../../types/default.js'
 
 export const createCommand = (client: Griza) => {
 	return {
@@ -38,58 +18,41 @@ export const createCommand = (client: Griza) => {
 		],
 		async run({ client, translate, interaction, settings }) {
 			const stationURL = interaction.options.getString('station', true)
-			const station = client.radio.resolveStation<true>(stationURL)
+			const queue = client.radio.queues.get(interaction.guildId!)
+			const station = client.radio.resolveStation(stationURL)
 
 			await interaction.deferReply()
 
-			if (settings.stationURL === null) {
-				await interaction.followUp({
-					embeds: [
-						{
-							color: 0xfade2b,
-							description: translate('CHANGE_COMMAND_WARNING_NOT_SET')
-						}
-					]
-				})
+			if (!station) {
+				const warningMessage = translate('CHANGE_COMMAND_WARNING_INVALID_STATION')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+			}
 
-				return
+			if (settings.stationURL === null && settings.voiceChannelId === null) {
+				const warningMessage = translate('CHANGE_COMMAND_WARNING_NOT_SET')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+			}
+
+			if (!queue?.channel?.members.has(interaction.user.id)) {
+				const warningMessage = translate('CHANGE_COMMAND_WARNING_NOT_IN_CHANNEL')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			if (settings.stationURL === stationURL) {
-				await interaction.followUp({
-					embeds: [
-						{
-							color: 0xfade2b,
-							description: translate('CHANGE_COMMAND_WARNING_SAME_STATION')
-						}
-					]
-				})
-
-				return
+				const warningMessage = translate('CHANGE_COMMAND_WARNING_SAME_STATION')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			try {
 				await client.radio.change(interaction, station)
-				await interaction.followUp({
-					embeds: [
-						{
-							color: 0x39ff84,
-							description: translate('CHANGE_COMMAND_SUCCESS', {
-								'{STATION}': station.name
-							})
-						}
-					]
-				})
+
+				const successMessage = translate('CHANGE_COMMAND_SUCCESS', { '{STATION}': station.name })
+				return await interaction.followUp({ embeds: [{ color: 0x39ff84, description: successMessage }] })
 			} catch (error: unknown) {
 				client.logger.error(error)
-				await interaction.followUp({
-					embeds: [
-						{
-							color: 0xff1f4f,
-							description: translate('CHANGE_COMMAND_ERROR')
-						}
-					]
-				})
+
+				const errorMessage = translate('CHANGE_COMMAND_ERROR')
+				return interaction.followUp({ embeds: [{ color: 0xff1f4f, description: errorMessage }] })
 			}
 		}
 	} as ICommand

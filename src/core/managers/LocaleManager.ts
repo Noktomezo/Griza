@@ -94,9 +94,8 @@ export class LocaleManager extends TypedEmitter<ILocaleManagerEvents> {
 
 	public _update() {
 		this.emit('updateStarted')
-		const allGuildSettings = this.client.database.getAll()
 
-		for (const [guildId, guildSettings] of allGuildSettings) {
+		for (const [guildId, guildSettings] of this.client.database.getAll()) {
 			const guildLocale = this.resolve(guildSettings.locale)
 			this._cache.set(guildId, guildLocale)
 		}

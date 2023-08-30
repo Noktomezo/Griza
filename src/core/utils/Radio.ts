@@ -1,6 +1,6 @@
 import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
-import type { TrackLike } from 'discord-player'
+import type { PlayerNodeInitializerOptions, TrackLike } from 'discord-player'
 import { Player } from 'discord-player'
 import type { VoiceChannel } from 'discord.js'
 import { Collection } from 'discord.js'
@@ -23,17 +23,28 @@ export class Radio extends Player {
 
 	private readonly _localized: Collection<TLocaleCode, TStationCollection>
 
+	private readonly _options: PlayerNodeInitializerOptions<unknown>
+
 	public constructor(
 		public override client: Griza,
 		public stationFolderPath: string
 	) {
 		super(client)
+		this._options = {
+			nodeOptions: {
+				disableHistory: true,
+				leaveOnEnd: false,
+				leaveOnStop: false,
+				leaveOnEmpty: false,
+				selfDeaf: true
+			}
+		}
 
 		this._stations = new Collection<string, IStationData>()
 		this._localized = new Collection<TLocaleCode, TStationCollection>()
 
 		this._fetch()
-		this.client.locales.once('fetchFinished', () => this._translateAllStations())
+		this.client.locales.once('fetchFinished', () => this._translateStations())
 		this.client.database.once('updateFinished', async () => this._launch())
 	}
 
@@ -46,52 +57,30 @@ export class Radio extends Player {
 		const guild = this.client.guilds.cache.get(guildId)
 		if (!guild) throw new Error('Invalid guild')
 
-		const guildSettings = this.client.database.get(guild.id)!
+		const guildSettings = this.client.database.get(guild.id)
 		const voiceChannel = guild.channels.cache.find((c): c is VoiceChannel => c.id === settings.voiceChannelId)
-		const station = this.resolveStation<true>(settings.stationURL)
-		if (!voiceChannel || !station) throw new Error('Invalid station or voice channel')
+		if (!voiceChannel) throw new Error('Invalid voice channel data')
 
-		this.client.database.set(guild.id, { ...guildSettings, ...settings })
+		const station = this.resolveStation(settings.stationURL)
+		if (!station) throw new Error('Invalid station data')
+
+		await this.client.database.set(guild.id, { ...guildSettings, ...settings })
 
 		const resolvedURL = await resolveURL(settings.stationURL)
-		if (!resolvedURL) throw new Error('Invalid station url')
+		if (!resolvedURL) throw new Error('Unable to resolve station URL')
 
-		await this.safePlay(voiceChannel, resolvedURL, true)
+		await this.play(voiceChannel, resolvedURL, this._options)
 	}
 
-	public reset(guildIdResolvable: TGuildIdResolvable) {
+	public async reset(guildIdResolvable: TGuildIdResolvable) {
 		const guildId = resolveGuildId(guildIdResolvable)
 		const guild = this.client.guilds.cache.get(guildId)
-		if (!guild) return
+		if (!guild) throw new Error('Invalid guild data')
 
 		const queue = this.queues.get(guild)
 		if (queue?.currentTrack) queue.delete()
 
-		this.client.database.setDefaults(guild.id)
-	}
-
-	public async safePlay(voiceChannel: VoiceChannel, track: TrackLike, skip: boolean = false) {
-		const guildId = resolveGuildId(voiceChannel)
-		const guild = this.client.guilds.cache.get(guildId)
-		if (!guild) return
-
-		const queue = this.queues.get(guild)
-		if (skip && queue) queue.node.skip()
-
-		try {
-			return await this.play(voiceChannel, track, {
-				nodeOptions: {
-					disableHistory: true,
-					leaveOnEnd: false,
-					leaveOnStop: false,
-					leaveOnEmpty: false,
-					selfDeaf: true
-				}
-			})
-		} catch (error) {
-			this.client.logger.error(error)
-			return null
-		}
+		await this.client.database.setDefaults(guild.id)
 	}
 
 	public async change(guildIdResolvable: TGuildIdResolvable, stationResolvable: TStationResolvable) {
@@ -99,17 +88,25 @@ export class Radio extends Player {
 		const guild = this.client.guilds.cache.get(guildId)
 		if (!guild) return
 
-		const guildSettings = this.client.database.get(guild.id)!
-		const station = this.resolveStation<true>(stationResolvable)
+		const guildSettings = this.client.database.get(guild.id)
+		const station = this.resolveStation(stationResolvable)
+		if (!station) throw new Error('Invalid station data')
+
 		const voiceChannel = guild.channels.cache.find((c): c is VoiceChannel => c.id === guildSettings?.voiceChannelId)
-		if (!voiceChannel) return
+		if (!voiceChannel) throw new Error('Invalid voice channel data')
 
 		const resolvedURL = await resolveURL(station.url)
-		if (!resolvedURL) return
+		if (!resolvedURL) throw new Error('Unable to resolve station URL')
 
-		await this.safePlay(voiceChannel, resolvedURL, true)
-		if (guildSettings.stationURL !== station.url)
-			this.client.database.set(guild.id, { ...guildSettings, stationURL: station.url })
+		try {
+			const queue = this.queues.get(guild)
+			const currentTrack = queue?.currentTrack
+
+			await this.play(voiceChannel, resolvedURL, this._options)
+			if (currentTrack) queue.node.skip()
+		} catch {
+			throw new Error('Unable to change station')
+		}
 	}
 
 	public async getCurrentTrackTitle(guildIdResolvable: TGuildIdResolvable) {
@@ -136,16 +133,10 @@ export class Radio extends Player {
 		})
 	}
 
-	public resolveStation<Choice extends boolean = false>(
-		stationResolvable: TStationResolvable
-	): TChoiceStation<Choice> {
-		if (isStationData(stationResolvable)) return stationResolvable as TChoiceStation<Choice>
-		if (isURL(stationResolvable))
-			return this._stations.find(s => s.url === stationResolvable) as TChoiceStation<Choice>
-		return (
-			(this._stations.find(s => s.name === stationResolvable) as TChoiceStation<Choice>) ??
-			(this._stations.get(stationResolvable) as TChoiceStation<Choice>)
-		)
+	public resolveStation(resolvable: TStationResolvable) {
+		if (isStationData(resolvable)) return resolvable
+		if (isURL(resolvable)) return this._stations.find(s => s.url === resolvable)
+		return this._stations.find(s => s.name === resolvable) ?? this._stations.get(resolvable)
 	}
 
 	private async _launch() {
@@ -163,7 +154,13 @@ export class Radio extends Player {
 			if (!voiceChannel) continue
 
 			const resolvedURL = await resolveURL(stationURL)
-			if (resolvedURL) void this.safePlay(voiceChannel, resolvedURL, true)
+			if (!resolvedURL) return
+
+			try {
+				void this.play(voiceChannel, resolvedURL, this._options)
+			} catch (error) {
+				this.client.logger.error(error)
+			}
 		}
 	}
 
@@ -179,15 +176,14 @@ export class Radio extends Player {
 		}
 	}
 
-	private _translateAllStations() {
+	private _translateStations() {
 		for (const localeCode of this.client.locales.allowed) {
 			const locale = this.client.locales.resolve(localeCode)
 			const localizedStationCollection = new Collection<string, IStationData>()
 			for (const [stationName, station] of this._stations.entries()) {
-				localizedStationCollection.set(stationName, {
-					...station,
-					description: locale.get(station.description) ?? station.description
-				})
+				const translatedDescription = locale.get(station.description) ?? station.description
+				const localizedStation = { ...station, description: translatedDescription }
+				localizedStationCollection.set(stationName, localizedStation)
 			}
 
 			this._localized.set(localeCode, localizedStationCollection)
