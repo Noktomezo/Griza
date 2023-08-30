@@ -37,13 +37,23 @@ export const createCommand = (client: Griza) => {
 				const filter = (i: Interaction) => i.isButton() && i.user.id === interaction.user.id
 				const confirmation = await response.awaitMessageComponent({ filter, time: 30_000 })
 
-				const newLocale = client.locales.resolve(confirmation.customId)
+				const newLocaleCode = confirmation.customId as TLocaleCode
+				const newLocale = client.locales.resolve(newLocaleCode)
 				const newLocaleName = newLocale.get('LANGUAGE_LABEL') ?? 'LANGUAGE_LABEL'
 				const message = newLocale.get('LANGUAGE_COMMAND_CHANGE_SUCCESS') ?? 'LANGUAGE_COMMAND_CHANGE_SUCCESS'
 
-				const newGuildSettings = { ...settings, locale: confirmation.customId as TLocaleCode }
+				const newGuildSettings = { ...settings, locale: newLocaleCode }
 				await client.database.set(interaction.guild!.id, newGuildSettings)
-				void client.commands.updateGuildCommands(interaction)
+
+				const newLocaleCommands = client.commands.getAll(newLocaleCode)
+				for (const newLocaleCommand of newLocaleCommands.values()) {
+					const oldLocaleCommand = interaction.guild!.commands.cache.find(c => c.name === newLocaleCommand.name)
+					if (!oldLocaleCommand) continue
+					void interaction.guild!.commands.edit(oldLocaleCommand, {
+						description: newLocaleCommand.description,
+						options: newLocaleCommand.options ?? []
+					})
+				}
 
 				const successMessage = message.replace('{LANGUAGE}', newLocaleName)
 				await interaction.editReply({ embeds: [{ color: 0x39ff84, description: successMessage }], components: [] })
