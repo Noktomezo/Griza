@@ -103,6 +103,8 @@ export class Radio extends Player {
 			const currentTrack = queue?.currentTrack
 
 			await this.play(voiceChannel, resolvedURL, this._options)
+			await this.client.database.set(guild.id, { ...guildSettings, stationURL: station.url })
+
 			if (currentTrack) queue.node.skip()
 		} catch {
 			throw new Error('Unable to change station')
