@@ -81,12 +81,12 @@ export const createCommand = (client: Griza) => {
 					'{STATION}': `<#${voiceChannel.id}>`
 				})
 
-				await interaction.followUp({ embeds: [{ color: 0x39ff84, description: successMessage }] })
+				return await interaction.followUp({ embeds: [{ color: 0x39ff84, description: successMessage }] })
 			} catch (error: unknown) {
 				client.logger.error(error)
 
 				const errorMessage = translate('SETUP_COMMAND_ERROR')
-				await interaction.followUp({ embeds: [{ color: 0xff1f4f, description: errorMessage }] })
+				return await interaction.followUp({ embeds: [{ color: 0xff1f4f, description: errorMessage }] })
 			}
 		}
 	} as ICommand
