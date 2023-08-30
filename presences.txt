@@ -3,4 +3,3 @@
 /help
 {GUILDS}
 /change
-{MEMBERS}

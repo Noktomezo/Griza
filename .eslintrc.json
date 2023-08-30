@@ -6,7 +6,6 @@
 	},
 	"rules": {
 		"@typescript-eslint/consistent-type-definitions": ["error", "interface"],
-		"unicorn/consistent-function-scoping": "off",
 		"import/extensions": "off",
 		"import/no-extraneous-dependencies": "off",
 		"no-restricted-globals": "off",
