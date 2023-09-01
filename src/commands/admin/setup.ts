@@ -77,8 +77,8 @@ export const createCommand = (client: Griza) => {
 				await client.radio.set(interaction, { voiceChannelId, commandChannelId, stationURL })
 
 				const successMessage = translate('SETUP_COMMAND_SUCCESS', {
-					'{VOICE_CHANNEL}': isStationRandom ? randomStation.name : station.name,
-					'{STATION}': `<#${voiceChannel.id}>`
+					'{VOICE_CHANNEL}': `<#${voiceChannel.id}>`,
+					'{STATION}': isStationRandom ? randomStation.name : station.name
 				})
 
 				return await interaction.followUp({ embeds: [{ color: 0x39ff84, description: successMessage }] })
