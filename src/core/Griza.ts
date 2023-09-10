@@ -80,7 +80,7 @@ export class Griza<Ready extends boolean = boolean> extends Client<Ready> {
 		await this.handleEvents(clientEventsPath, this)
 		await this.handleEvents(databaseEventsPath, this.database)
 		await this.handleEvents(localeEventsPath, this.locales)
-		await this.handleEvents(radioEventsPath, this.radio)
+		await this.handleEvents(radioEventsPath, this.radio.events)
 		await this.login(token)
 	}
 }

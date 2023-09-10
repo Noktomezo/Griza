@@ -31,11 +31,10 @@ export class Radio extends Player {
 		super(client)
 		this._options = {
 			nodeOptions: {
-				disableHistory: true,
 				leaveOnEnd: false,
 				leaveOnStop: false,
 				leaveOnEmpty: false,
-				selfDeaf: true
+				connectionTimeout: 99_999
 			}
 		}
 
@@ -141,7 +140,7 @@ export class Radio extends Player {
 	}
 
 	private async _launch() {
-		await this.extractors.loadDefault()
+		await this.extractors.loadDefault(ext => ext === 'AttachmentExtractor')
 
 		const allGuildSettings = this.client.database.getAll()
 		if (!allGuildSettings.size) return
@@ -158,7 +157,7 @@ export class Radio extends Player {
 			if (!resolvedURL) return
 
 			try {
-				void this.play(voiceChannel, resolvedURL, this._options)
+				await this.play(voiceChannel, resolvedURL, this._options)
 			} catch (error) {
 				this.client.logger.error(error)
 			}

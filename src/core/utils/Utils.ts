@@ -19,10 +19,6 @@ export async function resolveURL(url: string): Promise<string | null> {
 	})
 }
 
-export async function sleep(ms: number) {
-	return promisify(setTimeout)
-}
-
 export function importJSON<T>(filePath: string): T {
 	const fileContents = readFileSync(filePath, 'utf8')
 	return JSON.parse(fileContents) as T
