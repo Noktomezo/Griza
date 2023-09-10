@@ -8,11 +8,8 @@ import type { TimeZoneString } from './types/utils.js'
 const processEnv = z.object({
 	DISCORD_TOKEN: z.string(),
 	MONGO_CONNECTION_URL: z.string(),
-	DEFAULT_LOCALE: z.custom<LocaleString>(),
-	TIMEZONE: z.custom<TimeZoneString>()
+	DEFAULT_LOCALE: z.custom<LocaleString>().refine(isLocaleCode, 'ENV_VAR_DEFAULT_LOCALE_IS_NOT_VALID'),
+	TIMEZONE: z.custom<TimeZoneString>().refine(isTimeZoneString, 'ENV_VAR_TIMEZONE_IS_NOT_VALID')
 })
 
 export const env = processEnv.parse(process.env)
-
-if (!isTimeZoneString(env.TIMEZONE)) throw new Error('ENV_VAR_TIMEZONE_IS_NOT_VALID')
-if (!isLocaleCode(env.DEFAULT_LOCALE)) throw new Error('ENV_VAR_DEFAULT_LOCALE_IS_NOT_VALID')

@@ -1,7 +1,7 @@
 import type { EventEmitter } from 'node:events'
 import { readdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import process, { cwd } from 'node:process'
+import { cwd } from 'node:process'
 import { pathToFileURL, fileURLToPath } from 'node:url'
 import { ClusterClient, getInfo } from 'discord-hybrid-sharding'
 import type { LocaleString } from 'discord.js'

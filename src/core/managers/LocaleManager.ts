@@ -1,7 +1,7 @@
 import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { Collection } from 'discord.js'
-import type { LocaleString, Snowflake } from 'discord.js'
+import type { Snowflake } from 'discord.js'
 import { TypedEmitter } from 'tiny-typed-emitter'
 import type {
 	ILocaleManagerEvents,
