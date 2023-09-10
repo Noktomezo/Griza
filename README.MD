@@ -17,7 +17,7 @@ Griza is a simple radio bot for Discord. If you're a fan of listening to music, 
 
 [Installation](#installation) does not take long if you follow the instructions. Just a few clicks and the bot is already on your server in the right channel, tuned to the right frequency and playing cool music.
 
-**The bot has some cool features:**
+## What makes it different from the others?
 
 -  Multiple language support
 -  Support for slash commands
