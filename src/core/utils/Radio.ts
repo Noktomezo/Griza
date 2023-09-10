@@ -7,7 +7,6 @@ import { Collection } from 'discord.js'
 import { Parser } from 'icecast-parser'
 import type {
 	IStationData,
-	TChoiceStation,
 	TGuildIdResolvable,
 	TLocaleCode,
 	TStationCollection,
@@ -114,10 +113,10 @@ export class Radio extends Player {
 	public async getCurrentTrackTitle(guildIdResolvable: TGuildIdResolvable) {
 		const guildId = resolveGuildId(guildIdResolvable)
 		const guild = this.client.guilds.cache.get(guildId)
-		if (!guild) return
+		if (!guild) throw new Error('Invalid guild data')
 
 		const guildSettings = this.client.database.get(guild.id)
-		if (!guildSettings?.stationURL) return
+		if (!guildSettings?.stationURL) throw new Error('Radio settings are invalid')
 
 		const resolvedURL = await resolveURL(guildSettings.stationURL)
 		if (!resolvedURL) return null
@@ -128,7 +127,7 @@ export class Radio extends Player {
 			url: resolvedURL
 		})
 
-		return new Promise<string | null>(resolve => {
+		return new Promise<string | null>((resolve, reject) => {
 			parser.once('metadata', m => resolve(m.get('StreamTitle') ?? null))
 			parser.once('error', () => resolve(null))
 			parser.once('empty', () => resolve(null))

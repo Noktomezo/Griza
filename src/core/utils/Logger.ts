@@ -20,7 +20,7 @@ export class Logger {
 		}
 	}
 
-	public warn(message: unknown[]) {
+	public warn(message: string | unknown) {
 		if (message) {
 			console.log(this._parseStrings(message, this.wp, 'warn'))
 		}
@@ -32,7 +32,7 @@ export class Logger {
 		}
 	}
 
-	private _parseStrings(obj: any, prefix: string, type: 'error' | 'info' | 'warn' = 'info'): string {
+	private _parseStrings(obj: any, prefix: string, type: 'error' | 'info' | 'warn' = 'info') {
 		const color = type === 'error' ? colors.red : type === 'warn' ? colors.yellow : colors.green
 
 		const time = getCurrentTime()

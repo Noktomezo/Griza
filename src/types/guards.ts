@@ -1,5 +1,5 @@
 import { URL } from 'node:url'
-import type { Snowflake, Guild, Interaction, ChatInputCommandInteraction } from 'discord.js'
+import type { Snowflake, Guild } from 'discord.js'
 import { Locale, SnowflakeUtil } from 'discord.js'
 import type { TLocaleJSON, TLocaleMap, TLocaleCode, IStationData } from './default.js'
 import type { TimeZoneString } from './utils.js'
@@ -47,13 +47,9 @@ export function isStationData(data: any): data is IStationData {
 }
 
 export function isURL(input: any): input is `file://${string}` | `http://${string}` | `https://${string}` {
-	if (typeof input !== 'string' || input.includes(' ')) return false
 	try {
-		const url = new URL(input)
-		if (!['file:', 'http:', 'https:'].includes(url.protocol)) return false
+		return typeof input === 'string' && !input.includes(' ') && /^https?:|file:/.test(new URL(input).protocol)
 	} catch {
 		return false
 	}
-
-	return true
 }

@@ -1,7 +1,6 @@
-import type { Griza } from '../../core/Griza.js'
 import type { ICommand } from '../../types/default.js'
 
-export const createCommand = (client: Griza) => {
+export const createCommand = () => {
 	return {
 		name: 'reset',
 		description: 'RESET_COMMAND_DESCRIPTION',

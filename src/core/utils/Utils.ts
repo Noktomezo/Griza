@@ -1,6 +1,7 @@
 import { existsSync, lstatSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { extname } from 'node:path'
 import process from 'node:process'
+import { promisify } from 'node:util'
 import type { Snowflake } from 'discord.js'
 import type { FollowResponse } from 'follow-redirects'
 import follow from 'follow-redirects'
@@ -19,9 +20,7 @@ export async function resolveURL(url: string): Promise<string | null> {
 }
 
 export async function sleep(ms: number) {
-	return new Promise(resolve => {
-		setTimeout(resolve, ms)
-	})
+	return promisify(setTimeout)
 }
 
 export function importJSON<T>(filePath: string): T {

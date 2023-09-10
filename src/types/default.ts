@@ -17,8 +17,8 @@ import type { Griza } from '../core/Griza.js'
 import type { TimeZoneString, If } from './utils.js'
 
 export interface IGrizaOptions extends ClientOptions {
-	defaultLocale: LocaleString
-	mongoConnectionURL: string
+	defaultLocale: LocaleString 
+	mongoConnectionURL: string 
 	timeZone: TimeZoneString
 }
 

@@ -1,9 +1,8 @@
-import type { ButtonInteraction, Interaction } from 'discord.js'
+import type { Interaction } from 'discord.js'
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
-import type { Griza } from '../../core/Griza.js'
 import type { ICommand, TLocaleCode } from '../../types/default.js'
 
-export const createCommand = (client: Griza) => {
+export const createCommand = () => {
 	return {
 		name: 'language',
 		description: 'LANGUAGE_COMMAND_DESCRIPTION',

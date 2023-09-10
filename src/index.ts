@@ -11,7 +11,7 @@ const bot = new Griza({
 	partials: [Partials.Message, Partials.Channel]
 })
 
-await bot.init(env.DISCORD_TOKEN)
+await bot.init(env.DISCORD_TOKEN) 
 
 const repair = async (error: unknown) => {
 	bot.logger.error(error)

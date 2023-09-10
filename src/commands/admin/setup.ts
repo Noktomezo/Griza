@@ -1,25 +1,6 @@
-import { readdirSync } from 'node:fs'
-import { join } from 'node:path'
-import { cwd } from 'node:process'
 import { ApplicationCommandOptionType, ChannelType } from 'discord.js'
 import type { Griza } from '../../core/Griza.js'
-import { importJSON, isValidJSON } from '../../core/utils/Utils.js'
-import type { ICommand, IStationData } from '../../types/default.js'
-
-const fetchStations = () => {
-	const stationFolderPath = join(cwd(), 'stations')
-	const stationNames = []
-
-	for (const stationFile of readdirSync(stationFolderPath)) {
-		const stationFilePath = join(stationFolderPath, stationFile)
-		if (!isValidJSON(stationFilePath)) continue
-
-		const station = importJSON<IStationData>(stationFilePath)
-		stationNames.push(station)
-	}
-
-	return stationNames
-}
+import type { ICommand } from '../../types/default.js'
 
 export const createCommand = (client: Griza) => {
 	return {
@@ -37,7 +18,7 @@ export const createCommand = (client: Griza) => {
 			{
 				name: 'station',
 				type: ApplicationCommandOptionType.String,
-				choices: fetchStations().map(s => ({ name: `${s.emoji} ${s.name}`, value: s.url })),
+				choices: client.radio.stations.map(s => ({ name: `${s.emoji} ${s.name}`, value: s.url })),
 				required: false,
 				description: 'SETUP_COMMAND_OPTION_STATION_DESCRIPTION'
 			},
