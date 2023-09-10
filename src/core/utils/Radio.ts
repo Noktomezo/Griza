@@ -140,7 +140,7 @@ export class Radio extends Player {
 	}
 
 	private async _launch() {
-		await this.extractors.loadDefault(ext => ext === 'AttachmentExtractor')
+		await this.extractors.loadDefault()
 
 		const allGuildSettings = this.client.database.getAll()
 		if (!allGuildSettings.size) return
