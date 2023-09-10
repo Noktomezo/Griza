@@ -75,10 +75,12 @@ export class Griza<Ready extends boolean = boolean> extends Client<Ready> {
 		const clientEventsPath = join(__dirname, '..', 'events', 'client')
 		const databaseEventsPath = join(__dirname, '..', 'events', 'database')
 		const localeEventsPath = join(__dirname, '..', 'events', 'locales')
+		const radioEventsPath = join(__dirname, '..', 'events', 'radio')
 
 		await this.handleEvents(clientEventsPath, this)
 		await this.handleEvents(databaseEventsPath, this.database)
 		await this.handleEvents(localeEventsPath, this.locales)
+		await this.handleEvents(radioEventsPath, this.radio)
 		await this.login(token)
 	}
 }
