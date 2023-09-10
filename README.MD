@@ -19,11 +19,12 @@ Griza is a simple radio bot for Discord. If you're a fan of listening to music, 
 
 **The bot has some cool features:**
 
--  Set up the radio channel with one command
--  Music playback 24/7
+-  Multiple language support
 -  Support for slash commands
+-  Radio setup in 1 command
 -  Large number of radio stations
--  You can find out the name of the current music on the radio
+-  Music playback 24/7
+-  Easily find out the current track on the radio
 
 ## Prerequisites
 
