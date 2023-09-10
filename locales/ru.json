@@ -2,7 +2,9 @@
 	"LANGUAGE_FLAG": "\uD83C\uDDF7\uD83C\uDDFA",
 	"LANGUAGE_LABEL": "Русский",
 
-	"LOGGED_IN": "Успешный вход от имени {CLIENT_USER}",
+	"READY_EVENT_LOGGED_IN": "Успешный вход от имени {CLIENT_USER}",
+
+	"INTERACTION_CREATE_EVENT_WARNING_ADMIN_ONLY": "Только участники с правами администратора могут выполнять эту команду",
 
 	"DATABASE_UPDATE_STARTED": "Началось обновление базы данных",
 	"DATABASE_UPDATE_FINISHED": "Обновление базы данных завершено",

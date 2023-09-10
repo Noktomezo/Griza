@@ -1,7 +1,10 @@
 {
 	"LANGUAGE_FLAG": "\uD83C\uDDFA\uD83C\uDDF8",
 	"LANGUAGE_LABEL": "English",
-	"LOGGED_IN": "Successfully logged in as {CLIENT_USER}",
+
+	"READY_EVENT_LOGGED_IN": "Successfully logged in as {CLIENT_USER}",
+
+	"INTERACTION_CREATE_EVENT_WARNING_ADMIN_ONLY": "Only members with administrator privileges can execute this command",
 
 	"DATABASE_UPDATE_STARTED": "Database update started",
 	"DATABASE_UPDATE_FINISHED": "Database update finished",
