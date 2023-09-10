@@ -157,7 +157,7 @@ export class Radio extends Player {
 			if (!resolvedURL) return
 
 			try {
-				await this.play(voiceChannel, resolvedURL, this._options)
+				void this.play(voiceChannel, resolvedURL, this._options)
 			} catch (error) {
 				this.client.logger.error(error)
 			}

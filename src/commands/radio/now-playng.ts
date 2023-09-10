@@ -21,6 +21,11 @@ export const createCommand = () => {
 				return interaction.followUp({ embeds: [{ color: 0xfade2b, description }] })
 			}
 
+			if (!queue?.channel?.members.has(interaction.user.id)) {
+				const warningMessage = translate('NOW_PLAYING_COMMAND_WARNING_NOT_IN_CHANNEL')
+				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+			}
+
 			if (!queue?.currentTrack) {
 				const warningMessage = translate('NOW_PLAYING_COMMAND_WARNING_NOT_PLAYING')
 				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
