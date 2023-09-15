@@ -43,8 +43,8 @@
 	"RESET_COMMAND_ERROR": "Failed to reset bot settings, try again later",
 
 	"LANGUAGE_COMMAND_DESCRIPTION": "Change the language of the bot on the server",
-	"LANGUAGE_COMMAND_CHOOSE": "Select the language that you want to use",
-	"LANGUAGE_COMMAND_WARNING_CHOOSE_TIMEOUT": "You have not selected a language within 30 seconds, the language will not be changed",
+	"LANGUAGE_COMMAND_OPTION_LANGUAGE_DESCRIPTION": "Language into which the bot interface will be translated",
+	"LANGUAGE_COMMAND_ERROR_SAME_LOCALE": "You cannot change the current language to the same language",
 	"LANGUAGE_COMMAND_CHANGE_SUCCESS": "The language has been successfully changed to **`{LANGUAGE}`**",
 
 	"CHANGE_COMMAND_DESCRIPTION": "Change the current radio station",

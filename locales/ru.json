@@ -43,8 +43,8 @@
 	"RESET_COMMAND_ERROR": "Не удалось сбросить настройки бота, попробуйте снова позже",
 
 	"LANGUAGE_COMMAND_DESCRIPTION": "Сменить язык бота на сервере",
-	"LANGUAGE_COMMAND_CHOOSE": "Выберите язык, который хотите использовать",
-	"LANGUAGE_COMMAND_WARNING_CHOOSE_TIMEOUT": "Вы не выбрали язык в течении 30 секунд, язык не будет сменен",
+	"LANGUAGE_COMMAND_OPTION_LANGUAGE_DESCRIPTION": "Язык, на который будет переведён интерфейс бота",
+	"LANGUAGE_COMMAND_ERROR_SAME_LOCALE": "Вы не можете поменять текущий язык на тот же самый",
 	"LANGUAGE_COMMAND_CHANGE_SUCCESS": "Языка успешно изменен на **`{LANGUAGE}`**",
 
 	"CHANGE_COMMAND_DESCRIPTION": "Изменить текущую радиостанцию",

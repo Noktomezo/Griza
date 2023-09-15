@@ -57,7 +57,7 @@ export class CommandManager {
 				const commandFileURL = pathToFileURL(commandFilePath).toString()
 				const { createCommand }: { createCommand: TCreateCommandFunction } = await import(commandFileURL)
 				const command = createCommand(this.client)
-				this._commands.set(command.name, createCommand(this.client))
+				this._commands.set(command.name, command)
 			}
 		}
 	}

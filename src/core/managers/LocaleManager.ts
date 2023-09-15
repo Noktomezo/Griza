@@ -41,12 +41,16 @@ export class LocaleManager extends TypedEmitter<ILocaleManagerEvents> {
 
 	public resolve(resolvable?: TLocaleResolvable): TLocaleMap {
 		if (!resolvable) return this.default
-		if (isLocaleCode(resolvable)) return this._locales.get(resolvable) as TLocaleMap
-		if (isLocaleJSON(resolvable)) return jsonToMap(resolvable)
 		if (isLocaleMap(resolvable)) return resolvable
+		if (isLocaleJSON(resolvable)) return jsonToMap(resolvable)
+		if (isLocaleCode(resolvable)) return this._locales.get(resolvable) as TLocaleMap
 
-		const guildId = resolveGuildId(resolvable)
-		return this._cache.get(guildId) ?? this.default
+		try {
+			const guildId = resolveGuildId(resolvable)
+			return this._cache.get(guildId) ?? this.default
+		} catch {
+			return this.default
+		}
 	}
 
 	public resolveCode(resolvable?: TLocaleResolvable): TLocaleCode {
