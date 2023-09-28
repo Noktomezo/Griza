@@ -1,9 +1,9 @@
 import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
-import type { PlayerNodeInitializerOptions, TrackLike } from 'discord-player'
+import type { PlayerNodeInitializerOptions } from 'discord-player'
 import { Player } from 'discord-player'
-import type { VoiceChannel } from 'discord.js'
 import { Collection } from 'discord.js'
+import type { VoiceChannel } from 'discord.js'
 import { Parser } from 'icecast-parser'
 import type {
 	IStationData,
@@ -43,7 +43,15 @@ export class Radio extends Player {
 
 		this._fetch()
 		this.client.locales.once('fetchFinished', () => this._translateStations())
-		this.client.database.once('updateFinished', async () => this._launch())
+		this.client.database.once('updateFinished', async () => {
+			await this._launch()
+			setTimeout(
+				async () => {
+					await this._keepAlive()
+				},
+				1_000 * 60 * 60 * 24
+			)
+		})
 	}
 
 	public get stations() {
@@ -126,17 +134,47 @@ export class Radio extends Player {
 			url: resolvedURL
 		})
 
-		return new Promise<string | null>((resolve, reject) => {
+		return new Promise<string | null>(resolve => {
 			parser.once('metadata', m => resolve(m.get('StreamTitle') ?? null))
 			parser.once('error', () => resolve(null))
 			parser.once('empty', () => resolve(null))
 		})
 	}
 
-	public resolveStation(resolvable: TStationResolvable) {
+	public resolveStation(resolvable: TStationResolvable | null) {
+		if (!resolvable) return null
 		if (isStationData(resolvable)) return resolvable
 		if (isURL(resolvable)) return this._stations.find(s => s.url === resolvable)
 		return this._stations.find(s => s.name === resolvable) ?? this._stations.get(resolvable)
+	}
+
+	private async _keepAlive() {
+		const allGuildSettings = this.client.database.getAll()
+		const neededGuildSettings = allGuildSettings.filter(_s => _s.stationURL && _s.voiceChannelId)
+
+		for (const [guildId, guildSettings] of neededGuildSettings.entries()) {
+			const { stationURL, voiceChannelId } = guildSettings
+			const guild = this.client.guilds.cache.get(guildId)
+			if (!guild) continue
+
+			const voiceChannel = guild.channels.cache.find((_c): _c is VoiceChannel => _c.id === voiceChannelId)
+			if (!voiceChannel) continue
+
+			const station = this.resolveStation(stationURL)
+			if (!station) continue
+
+			const resolvedURL = await resolveURL(station.url)
+			if (!resolvedURL) continue
+
+			const queue = this.queues.get(guild)
+			if (queue) queue.node.stop()
+
+			try {
+				void this.play(voiceChannel, resolvedURL, this._options)
+			} catch (error) {
+				this.client.logger.error(error)
+			}
+		}
 	}
 
 	private async _launch() {
@@ -145,8 +183,10 @@ export class Radio extends Player {
 		const allGuildSettings = this.client.database.getAll()
 		if (!allGuildSettings.size) return
 
-		for (const guild of this.client.guilds.cache.values()) {
-			const guildSettings = allGuildSettings.get(guild.id)!
+		for (const [guildId, guildSettings] of this.client.database.getAll()) {
+			const guild = this.client.guilds.cache.get(guildId)
+			if (!guild) continue
+
 			const { stationURL, voiceChannelId } = guildSettings
 			if (!stationURL || !voiceChannelId) continue
 
