@@ -13,28 +13,28 @@ export const createCommand = () => {
 
 			if (!station) {
 				const warningMessage = translate('NOW_PLAYING_COMMAND_WARNING_INVALID_STATION')
-				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+				return interaction.editReply({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			if (settings.stationURL === null) {
 				const description = translate('NOW_PLAYING_COMMAND_WARNING_NOT_SET')
-				return interaction.followUp({ embeds: [{ color: 0xfade2b, description }] })
+				return interaction.editReply({ embeds: [{ color: 0xfade2b, description }] })
 			}
 
 			if (!queue?.channel?.members.has(interaction.user.id)) {
 				const warningMessage = translate('NOW_PLAYING_COMMAND_WARNING_NOT_IN_CHANNEL')
-				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+				return interaction.editReply({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			if (!queue?.currentTrack) {
 				const warningMessage = translate('NOW_PLAYING_COMMAND_WARNING_NOT_PLAYING')
-				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+				return interaction.editReply({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			const trackTitle = await client.radio.getCurrentTrackTitle(interaction)
 			if (!trackTitle) {
 				const errorMessage = translate('NOW_PLAYING_COMMAND_ERROR')
-				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: errorMessage }] })
+				return interaction.editReply({ embeds: [{ color: 0xfade2b, description: errorMessage }] })
 			}
 
 			const description = translate('NOW_PLAYING_COMMAND_CURRENT_TRACK', {
@@ -42,7 +42,7 @@ export const createCommand = () => {
 				'{TRACK}': trackTitle
 			})
 
-			return interaction.followUp({ embeds: [{ color: 0x39ff84, description, thumbnail: { url: station.logo } }] })
+			return interaction.editReply({ embeds: [{ color: 0x39ff84, description, thumbnail: { url: station.logo } }] })
 		}
 	} as ICommand
 }

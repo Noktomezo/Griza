@@ -33,7 +33,7 @@ export const createCommand = () => {
 				.join('\n\n')
 
 			const finalMessage = `${infoMessage}\n\n${helpMessage}`
-			return interaction.followUp({ embeds: [{ color: 0xfade2b, description: finalMessage }] })
+			return interaction.editReply({ embeds: [{ color: 0xfade2b, description: finalMessage }] })
 		}
 	} as ICommand
 }

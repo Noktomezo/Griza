@@ -45,12 +45,7 @@ export class Radio extends Player {
 		this.client.locales.once('fetchFinished', () => this._translateStations())
 		this.client.database.once('updateFinished', async () => {
 			await this._launch()
-			setTimeout(
-				async () => {
-					await this._keepAlive()
-				},
-				1_000 * 60 * 60 * 24
-			)
+			setTimeout(async () => this._keepAlive(), 1_000 * 60 * 60 * 24)
 		})
 	}
 

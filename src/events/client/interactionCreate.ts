@@ -13,7 +13,7 @@ export const event = async (client: Griza, interaction: Interaction) => {
 
 	if (command.category === 'admin' && !interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
 		const warningMessage = translate('INTERACTION_CREATE_EVENT_WARNING_ADMIN_ONLY')
-		await interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }], ephemeral: true })
+		await interaction.reply({ embeds: [{ color: 0xfade2b, description: warningMessage }], ephemeral: true })
 		return
 	}
 

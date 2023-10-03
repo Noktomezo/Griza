@@ -29,7 +29,7 @@ export const createCommand = (client: Griza) => {
 
 			if (currentLocale === newLocale) {
 				const errorMessage = translate('LANGUAGE_COMMAND_ERROR_SAME_LOCALE')
-				await interaction.followUp({ embeds: [{ color: 0xff1f4f, description: errorMessage }] })
+				await interaction.editReply({ embeds: [{ color: 0xff1f4f, description: errorMessage }] })
 				return
 			}
 

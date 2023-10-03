@@ -42,12 +42,12 @@ export const createCommand = (client: Griza) => {
 
 			if (!station) {
 				const warningMessage = translate('SETUP_COMMAND_WARNING_INVALID_STATION')
-				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+				return interaction.editReply({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			if (settings.voiceChannelId && settings.stationURL) {
 				const warningMessage = translate('SETUP_COMMAND_WARNING_ALREADY_SET')
-				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+				return interaction.editReply({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			try {
@@ -62,12 +62,12 @@ export const createCommand = (client: Griza) => {
 					'{STATION}': isStationRandom ? randomStation.name : station.name
 				})
 
-				return await interaction.followUp({ embeds: [{ color: 0x39ff84, description: successMessage }] })
+				return await interaction.editReply({ embeds: [{ color: 0x39ff84, description: successMessage }] })
 			} catch (error: unknown) {
 				client.logger.error(error)
 
 				const errorMessage = translate('SETUP_COMMAND_ERROR')
-				return await interaction.followUp({ embeds: [{ color: 0xff1f4f, description: errorMessage }] })
+				return await interaction.editReply({ embeds: [{ color: 0xff1f4f, description: errorMessage }] })
 			}
 		}
 	} as ICommand

@@ -25,34 +25,34 @@ export const createCommand = (client: Griza) => {
 
 			if (!station) {
 				const warningMessage = translate('CHANGE_COMMAND_WARNING_INVALID_STATION')
-				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+				return interaction.editReply({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			if (settings.stationURL === null && settings.voiceChannelId === null) {
 				const warningMessage = translate('CHANGE_COMMAND_WARNING_NOT_SET')
-				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+				return interaction.editReply({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			if (!queue?.channel?.members.has(interaction.user.id)) {
 				const warningMessage = translate('CHANGE_COMMAND_WARNING_NOT_IN_CHANNEL')
-				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+				return interaction.editReply({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			if (settings.stationURL === stationURL) {
 				const warningMessage = translate('CHANGE_COMMAND_WARNING_SAME_STATION')
-				return interaction.followUp({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
+				return interaction.editReply({ embeds: [{ color: 0xfade2b, description: warningMessage }] })
 			}
 
 			try {
 				await client.radio.change(interaction, station)
 
 				const successMessage = translate('CHANGE_COMMAND_SUCCESS', { '{STATION}': station.name })
-				return await interaction.followUp({ embeds: [{ color: 0x39ff84, description: successMessage }] })
+				return await interaction.editReply({ embeds: [{ color: 0x39ff84, description: successMessage }] })
 			} catch (error: unknown) {
 				client.logger.error(error)
 
 				const errorMessage = translate('CHANGE_COMMAND_ERROR')
-				return interaction.followUp({ embeds: [{ color: 0xff1f4f, description: errorMessage }] })
+				return interaction.editReply({ embeds: [{ color: 0xff1f4f, description: errorMessage }] })
 			}
 		}
 	} as ICommand
